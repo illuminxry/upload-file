@@ -16,6 +16,6 @@ const upload = multer({ storage: storage }); // Create the upload middleware
 /* GET home page. */
 router.get('/', indexrouter.getIndexPage);
 router.post('/upload', upload.single('file'), indexrouter.uploadfile);
-// router.get('/download/:id', indexrouter.downloadfile);
+router.get('/download/:id', indexrouter.downloadfile);
 
 module.exports = router;
