@@ -21,7 +21,9 @@ exports.uploadfile = (req, res) => {
 
     const connection = mysql.createPool(conn);
 
+    const originalFileName = req.file.originalname; // Get the original file name
     const filePath = req.file.path; // Assuming this is the path to the uploaded file
+
     const fileStream = fs.createReadStream(filePath); // Create a readable stream for the file
 
     let fileData = [];
@@ -40,9 +42,9 @@ exports.uploadfile = (req, res) => {
                 return;
             }
 
-            const sql = 'INSERT INTO files (file) VALUES (?)';
+            const sql = 'INSERT INTO files (filename, filepath) VALUES (?, ?)';
 
-            connection.query(sql, [fileData], (error, results) => {
+            connection.query(sql, [originalFileName, filePath], (error, results) => {
                 if (error) {
                     console.error('Error inserting file data:', error);
                     res.status(500).send('Error inserting file data');
@@ -55,5 +57,6 @@ exports.uploadfile = (req, res) => {
         });
     });
 };
+
 
     
